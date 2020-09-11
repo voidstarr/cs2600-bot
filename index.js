@@ -19,8 +19,8 @@ function checkZoom() {
 
     // if there wasn't any zoom info, and we have some now, tell em
     if(lastLatestZoomInfo === null && latestZoomInfo !== null){
-        client.channels.fetch(config.updateChannel).then((channel) => {
-            sendCurrentZoomInfo(channel);
+        config.updateChannels.forEach((channelID) => {
+            client.channels.fetch(channelID).then(sendCurrentZoomInfo);
         });
     }
 }

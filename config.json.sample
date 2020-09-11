@@ -3,5 +3,5 @@
     "password": "",
     "token": "",
     "authorizedUsers": [""],
-    "updateChannel": ""
+    "updateChannels": [""]
 }
