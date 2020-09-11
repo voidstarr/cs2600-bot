@@ -17,6 +17,7 @@ function checkZoom() {
         latestZoomInfo = null;
     });
 
+    // if there wasn't any zoom info, and we have some now, tell em
     if(lastLatestZoomInfo === null && latestZoomInfo !== null){
         client.channels.fetch(config.updateChannel).then((channel) => {
             sendCurrentZoomInfo(channel);
@@ -33,8 +34,10 @@ function sendCurrentZoomInfo(channel) {
 
 client.on("ready", () => {
     console.log("connected");
+    // check zoom at when the bot starts
     checkZoom();
-    new CronJob("0 */6 * * *", checkZoom).start();
+    // check zoom info at minute 0 past every 6th hour on Monday and Wednesday.
+    new CronJob("0 */6 * * 1,3", checkZoom).start();
 });
 
 client.on("message", msg => {
