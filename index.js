@@ -8,26 +8,24 @@ const client = new Discord.Client();
 var latestZoomInfo = null;
 
 function checkZoom() {
-    var lastLatestZoomInfo = latestZoomInfo;
-
     getTodaysZoomInfo(config.username, config.password).then((zoomInfo) => {
-        latestZoomInfo = zoomInfo.success ? zoomInfo : null;
+        var lastLatestZoomInfo = latestZoomInfo;
+        latestZoomInfo = zoomInfo.successful ? zoomInfo : null;
+        // if there wasn't any zoom info, and we have some now, tell em
+        if(lastLatestZoomInfo == null && latestZoomInfo != null){
+            config.updateChannels.forEach((channelID) => {
+                client.channels.fetch(channelID).then(sendCurrentZoomInfo);
+            });
+        }
     }).catch((reason) => {
         console.log(reason);
         latestZoomInfo = null;
     });
-
-    // if there wasn't any zoom info, and we have some now, tell em
-    if(lastLatestZoomInfo === null && latestZoomInfo !== null){
-        config.updateChannels.forEach((channelID) => {
-            client.channels.fetch(channelID).then(sendCurrentZoomInfo);
-        });
-    }
 }
 
 function sendCurrentZoomInfo(channel) {
     if(latestZoomInfo)
-        channel.send(`ID: ${latestZoomInfo.id}\nPassword: ${latestZoomInfo.password}\nURL: ${latestZoomInfo.url}`);
+        channel.send(`>>> ID: ${latestZoomInfo.id}\nPassword: ${latestZoomInfo.password}\nURL: ${latestZoomInfo.url}`);
     else
         channel.send("No zoom information. Either there is no class today, or the bot doesn't have the info yet.\nIn any case, check https://www.cpp.edu/~dagershman/cs2600-001");
 }
