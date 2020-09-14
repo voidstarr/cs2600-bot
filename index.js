@@ -38,12 +38,19 @@ client.on("ready", () => {
     new CronJob("0 */6 * * 1,3", checkZoom).start();
 });
 
+function enlighten(channel) {
+    channel.send(">>> :cloud_lightning:");
+}
+
 client.on("message", msg => {
     if (msg.content === "~!zoomInfo") {
         sendCurrentZoomInfo(msg.channel);
     } else if (msg.content === "~!forceUpdate" && config.authorizedUsers.includes(msg.author.id)) {
         checkZoom();
+    } else if (msg.content === "~!forceLightning") {
+        enlighten(msg.channel);
     }
 });
 
 client.login(config.token);
+
