@@ -39,7 +39,7 @@ client.on("ready", () => {
 });
 
 function enlighten(channel) {
-    channel.send(">>> :cloud_lightning:");
+    channel.send("https://media1.tenor.com/images/5b9ab119914d8287d5bff638dd35d6b8/tenor.gif");
 }
 
 client.on("message", msg => {
@@ -53,4 +53,3 @@ client.on("message", msg => {
 });
 
 client.login(config.token);
-
